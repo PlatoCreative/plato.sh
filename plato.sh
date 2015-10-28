@@ -12,7 +12,7 @@ resourcesDirectory=${resourcesDirectory:-~/Resources/}
 version=1.0
 ## settings end ##
 
-echo 'Successfully connected to plato bash'
+echo 'Successfully connected to plato bash v'${version}
 
 ## Aliases ##
 alias wget="curl -O"
@@ -31,10 +31,6 @@ alias watch='bundle exec compass watch'
 actions="cd open clone new remove theme up share halt prep resource copylocalfiles"
 
 ## Functions ##
-
-version(){
-  echo ${version};
-}
 
 site(){
     if [ $(compgen -W "${actions}" -- ${1}) ]; then
@@ -338,14 +334,6 @@ function addloginmodule(){
     fi
     git commit -m "Added generic login module";
     git push
-}
-
-function checkgit(){
-    if git push -n; then
-        echo 'Its all up to date'
-    else
-        echo 'Its not all up to date'
-    fi
 }
 
 function movetobitbucket(){
