@@ -1,10 +1,12 @@
 # plato.sh
 
-# Change you text below, change the values in settings and save the file to ~/ (Home directory) with the name .bash_login or .bash_profile
+Change you text below, change the values in settings and save the file to ~/ (Home directory) with the name .bash_login or .bash_profile
 
+```
+#!sh
 ## settings start ##
 sitesDirectory=~/Sites/
-bitBucketName=gorrie
+bitBucketName=YOUR_NAME
 platoSilverstripeInstallerVersion=@dev
 defaultEditor='atom' # 'atom' 'Sublime Text'
 defaultProcessor='codekit' # 'koala' 'compass' 'prepros'
@@ -17,3 +19,4 @@ resourcesDirectory=~/Resources/
 
 curl -s -L https://raw.githubusercontent.com/PlatoCreative/plato.sh/master/plato.sh -o ~/platotemp.sh
 source ~/platotemp.sh
+```
