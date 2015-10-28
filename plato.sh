@@ -8,7 +8,7 @@ defaultGitGUI=${defaultEditor:-'none'} # 'none'
 # this directory will have its contents copied to a site during install
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
-resourcesDirectory=${resourcesDirectory:-~/Resources/}
+resourcesDirectory=${resourcesDirectory:-'none'}
 version=1.0
 ## settings end ##
 
@@ -161,9 +161,7 @@ opensite(){
 themesite(){
     if [[ ${defaultProcessor} == 'compass' ]]; then
         # change directory
-        cd ${fullPath}/themes/*/
-        ls
-        compass watch
+        cd ${fullPath}/themes/*/; ls; watch
     else
         open -a "${defaultProcessor}" ${fullPath}/themes/*/
         cd ${fullPath}
