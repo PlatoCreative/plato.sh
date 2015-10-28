@@ -33,60 +33,62 @@ actions="cd open clone new remove theme up share halt prep resource copylocalfil
 ## Functions ##
 
 site(){
+    # assign variables
+    if [ -n "$3" ]; then
+        project=$3
+        server=${sitesDirectory}${2}/
+    elif [ -n "$2" ]; then
+        project=$2
+        server=${sitesDirectory}${1}/
+    else
+        project=$1
+        server=${sitesDirectory}
+    fi
+    fullPath=${server}${project}
+    resourcesPath=${resourcesDirectory}${project}
+
+    # call appropriate function
     if [ $(compgen -W "${actions}" -- ${1}) ]; then
         case $1 in
             'cd' )
-            cdsite ${2} ${3}
+            cdsite
             ;;
             'open' )
-            opensite ${2} ${3}
+            opensite
             ;;
             'clone' )
-            clonesite ${2} ${3}
-            opensite ${2} ${3}
-            resourcefolder ${2} ${3}
-            copylocalfiles ${2} ${3}
-            themesite ${2} ${3}
+            clonesite; opensite; resourcefolder; copylocalfiles; themesite
             ;;
             'new' )
-            newsite ${2} ${3}
-            opensite ${2} ${3}
-            resourcefolder ${2} ${3}
-            copylocalfiles ${2} ${3}
-            themesite ${2} ${3}
+            newsite; opensite; resourcefolder; copylocalfiles; themesite;
             ;;
             'up' )
-            configServer ${1} ${2} ${3}
-            cdsite ${2} ${3}
+            configServer 'up'; cdsite
             ;;
             'halt' )
-            configServer ${1} ${2} ${3}
+            configServer 'halt'
             ;;
             'prep' )
-            configServer 'up' ${2} ${3}
-            opensite ${2} ${3}
-            resourcefolder ${2} ${3}
-            themesite ${2} ${3}
+            configServer 'up'; opensite; resourcefolder; themesite;
             ;;
             'share' )
-            configServer 'up' ${2} ${3}
-            configServer ${1} ${2} ${3}
+            configServer 'up'; configServer 'share'
             ;;
             'remove' )
-            removesite ${2} ${3}
+            removesite
             ;;
             'theme' )
-            themesite ${2} ${3}
+            themesite
             ;;
             'resource' )
-            resourcefolder ${2} ${3}
+            resourcefolder
             ;;
             'copylocalfiles' )
-            copylocalfiles ${2} ${3}
+            copylocalfiles
             ;;
         esac
     else
-        cdsite ${1} ${2}
+        cdsite
     fi
 }
 
@@ -117,19 +119,6 @@ _siteAutoComplete(){
 
 complete -F _siteAutoComplete site
 
-_assignVariables(){
-    # assign variables
-    if [ -n "$2" ]; then
-        project=$2
-        server=${sitesDirectory}${1}/
-    else
-        project=$1
-        server=${sitesDirectory}
-    fi
-    fullPath=${server}${project}
-    resourcesPath=${resourcesDirectory}${project}
-}
-
 # checks vagrant files exists, if so vagrant up
 _vagrantup(){
     if [ -d .vagrant ]; then
@@ -138,8 +127,6 @@ _vagrantup(){
 }
 
 configServer(){
-    _assignVariables ${2} ${3}
-
     # change to server first to run vagrant
     cd ${fullPath}
 
@@ -152,22 +139,16 @@ configServer(){
 }
 
 cdsite(){
-    _assignVariables ${1} ${2}
-
-    # change to server first to run vagrant
-    cd ${server}
-
     if [ ! -d ${fullPath}/ ]; then
         echo "Project ${project} not found.";
     else
         cd ${fullPath}/
-
+        echo ${fullPath}
         ls
     fi
 }
 
 opensite(){
-    _assignVariables ${1} ${2}
     # open in finder
     open ${fullPath}
     # open in default editor
@@ -178,7 +159,6 @@ opensite(){
 }
 
 themesite(){
-    _assignVariables ${1} ${2}
     if [[ ${defaultProcessor} == 'compass' ]]; then
         # change directory
         cd ${fullPath}/themes/*/
@@ -191,8 +171,6 @@ themesite(){
 }
 
 newsite(){
-    _assignVariables ${1} ${2}
-
     # change to server first to run vagrant
     cd ${server}
 
@@ -216,17 +194,7 @@ newsite(){
     fi
 }
 
-copylocalfiles(){
-    _assignVariables ${1} ${2}
-    if [[ ${localSetupDirectory} != 'none' ]] && [[ -d ${localSetupDirectory}/ ]]; then
-        cp -Ri ${localSetupDirectory}/* ${fullPath}/
-        echo 'copied' ${localSetupDirectory} 'to' ${fullPath}
-    fi
-}
-
 clonesite(){
-    _assignVariables ${1} ${2}
-
     # change to server first to run vagrant
     cd ${server}
 
@@ -246,8 +214,6 @@ clonesite(){
 }
 
 removesite(){
-    _assignVariables ${1} ${2}
-
     while true; do
         read -p "Are you sure you want to delete ${fullPath}? [y/n]:" yn
         case $yn in
@@ -273,8 +239,14 @@ removesite(){
     done
 }
 
+copylocalfiles(){
+    if [[ ${localSetupDirectory} != 'none' ]] && [[ -d ${localSetupDirectory}/ ]]; then
+        cp -Ri ${localSetupDirectory}/* ${fullPath}/
+        echo 'copied' ${localSetupDirectory} 'to' ${fullPath}
+    fi
+}
+
 resourcefolder(){
-    _assignVariables ${1} ${2}
     if [[ ${resourcesDirectory} != 'none' ]]; then
         if [[ ! -d ${resourcesPath}/ ]]; then
             mkdir ${resourcesPath}
@@ -291,7 +263,6 @@ function gacp(){
         echo 'Could not run command, please add a commit message! e.g. gacp "commit message"';
     fi
 }
-
 
 ## run sonnen username 'password' ##
 function sonnen(){
