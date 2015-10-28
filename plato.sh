@@ -3,8 +3,8 @@ sitesDirectory=${sitesDirectory:-~/Sites/}
 bitBucketName=${bitBucketName:-plato}
 platoSilverstripeInstallerVersion=${platoSilverstripeInstallerVersion:-@dev}
 defaultEditor=${defaultEditor:-'atom'}
-defaultProcessor=${defaultEditor:-'compass'} # 'koala' 'compass' 'prepros'
-defaultGitGUI=${defaultEditor:-'none'} # 'none'
+defaultProcessor=${defaultProcessor:-'compass'} # 'koala' 'compass' 'prepros'
+defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 # this directory will have its contents copied to a site during install
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
@@ -153,7 +153,7 @@ opensite(){
     open ${fullPath}
     # open in default editor
     open -a "${defaultEditor}" ${fullPath}
-    if [[ ${defaultProcessor} != 'none' ]]; then
+    if [[ ${defaultGitGUI} != 'none' ]]; then
         open -a "${defaultGitGUI}" ${fullPath}
     fi
 }
