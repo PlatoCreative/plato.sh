@@ -1,6 +1,6 @@
 # plato.sh
 
-Change you text below, change the values in settings and save the file to ~/ (Home directory) with the name .bash_login or .bash_profile
+Change the values in settings and save the file to ~/ (Home directory) with the name .bash_login or .bash_profile.  If successful you should see "Connected to plato bash v#.#" the next time you open terminal.
 
 ```
 #!sh
