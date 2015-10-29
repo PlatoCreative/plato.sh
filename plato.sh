@@ -34,20 +34,20 @@ actions="cd open clone new remove theme up share halt prep resource copylocalfil
 
 site(){
     # assign variables
-      if [ $(compgen -W "${actions}" -- ${1}) ]; then
-          if [ -n "$3" ]; then
-              project=$3
-              server=${sitesDirectory}${2}/
-          else
-              project=$2
-              server=${sitesDirectory}
-          fi
-      else
-          project=$1
-          server=${sitesDirectory}
-      fi
-      fullPath=${server}${project}
-      resourcesPath=${resourcesDirectory}${project}
+    if [ $(compgen -W "${actions}" -- ${1}) ]; then
+        if [ -n "$3" ]; then
+            project=$3
+            server=${sitesDirectory}${2}/
+        else
+            project=$2
+            server=${sitesDirectory}
+        fi
+    else
+        project=$1
+        server=${sitesDirectory}
+    fi
+    fullPath=${server}${project}
+    resourcesPath=${resourcesDirectory}${project}
 
     # call appropriate function
     if [ $(compgen -W "${actions}" -- ${1}) ]; then
@@ -126,6 +126,22 @@ _vagrantup(){
     if [ -d .vagrant ]; then
         vagrant up
     fi
+}
+
+question(){
+    while true; do
+        read -p "${1} [Y/n]:" yn
+        case $yn in
+            [Y]* )
+            return 0
+            break;;
+            [Nn]* )
+            return 1
+            break;;
+            * )
+            echo "Please answer Yes or no.";;
+        esac
+    done
 }
 
 configServer(){
@@ -218,29 +234,16 @@ clonesite(){
 }
 
 removesite(){
-    while true; do
-        read -p "Are you sure you want to delete ${fullPath}? [y/n]:" yn
-        case $yn in
-            [Yy]* )
-            if [ ! -d ${fullPath}/ ]; then
-                echo "Project ${project} not found.";
-            else
-                cd ${fullPath}/
-
-                if [ -d .vagrant ]; then
-                    vagrant destroy
-                    echo "Removed Vagrant VM"
-                fi
-
-                rm -rf ${fullPath}
-
-                cd ${server}
+    if question "Are you sure you want to delete ${fullPath}?"; then
+        if [ -d ${fullPath}/ ]; then
+            if [ -d ${fullPath}/.vagrant ]; then
+                vagrant destroy
+                echo "Removed Vagrant VM"
             fi
-            break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
+            rm -rf ${fullPath}
+            echo "Removed ${fullPath}"
+        fi
+    fi
 }
 
 copylocalfiles(){
@@ -253,9 +256,15 @@ copylocalfiles(){
 resourcefolder(){
     if [[ ${resourcesDirectory} != 'none' ]]; then
         if [[ ! -d ${resourcesPath}/ ]]; then
-            mkdir ${resourcesPath}
+            if [[ ! -d ${resourcesPath}/ ]]; then
+                if question "Would like to resource directory for ${project}?"; then
+                    mkdir ${resourcesPath}
+                    open ${resourcesPath}
+                fi
+            else
+                open ${resourcesPath}
+            fi
         fi
-        open ${resourcesPath}
     fi
 }
 
