@@ -159,11 +159,15 @@ opensite(){
 }
 
 themesite(){
+    themepath=${fullPath}/themes/*/
+    if [ ! -d ${themepath}/ ]; then
+      themepath=${fullPath}/mysite/
+    fi
     if [[ ${defaultProcessor} == 'compass' ]]; then
         # change directory
-        cd ${fullPath}/themes/*/; ls; watch
+        cd ${themepath}; ls; watch
     else
-        open -a "${defaultProcessor}" ${fullPath}/themes/*/
+        open -a "${defaultProcessor}" ${themepath}
         cd ${fullPath}
     fi
 }
