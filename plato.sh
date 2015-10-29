@@ -160,9 +160,9 @@ opensite(){
 
 themesite(){
     themepath=${fullPath}/themes/*/
-    if [ ! -d ${themepath}/ ]; then
-      themepath=${fullPath}/mysite/
-    fi
+    # if [ ! -d ${themepath} ]; then
+    #   themepath=${fullPath}/mysite/
+    # fi
     if [[ ${defaultProcessor} == 'compass' ]]; then
         # change directory
         cd ${themepath}; ls; watch
@@ -258,7 +258,7 @@ resourcefolder(){
 }
 
 ## git Add, Commit and then Push ##
-function gacp(){
+gacp(){
     if [ -n "$1" ]; then
         git add --all && git commit -m "$1" && git push
     else
@@ -267,7 +267,7 @@ function gacp(){
 }
 
 ## run sonnen username 'password' ##
-function sonnen(){
+sonnen(){
     echo ssh ${1}@112.109.69.27
     if [ -n "$2" ]; then
         sshpass -p ${2} ssh ${1}@112.109.69.27 # Only works when you install sshpass
@@ -277,7 +277,7 @@ function sonnen(){
 }
 
 ## run bruce username 'password' ##
-function bruce(){
+bruce(){
     echo ssh ${1}@223.165.64.88
     if [ -n "$2" ]; then
         sshpass -p ${2} ssh ${1}@223.165.64.88 # Only works when you install sshpass
@@ -287,7 +287,7 @@ function bruce(){
 }
 
 ## run vs2 username 'password' ##
-function vs2(){
+vs2(){
     echo ssh ${1}@112.109.69.25
     if [ -n "$2" ]; then
         sshpass -p ${2} ssh ${1}@112.109.69.25 # Only works when you install sshpass
@@ -296,7 +296,7 @@ function vs2(){
     fi
 }
 
-function addloginmodule(){
+addloginmodule(){
     if [ -f "composer.json" ]; then
         composer config repositories.PlatoCreative vcs git@github.com:PlatoCreative/plato-genericlogin.git;
         composer require guzzlehttp/guzzle:dev-master plato-creative/plato-genericlogin:3.1.*;
@@ -309,7 +309,7 @@ function addloginmodule(){
     git push
 }
 
-function movetobitbucket(){
+movetobitbucket(){
     echo "SSH user: "
     read ssh_user
     echo "Server IP: "
