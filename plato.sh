@@ -155,7 +155,7 @@ opensite(){
     open ${fullPath}
     # open in default editor
     open -a "${defaultEditor}" ${fullPath}
-    if [[ ${defaultGitGUI} != 'none' ]]; then
+    if [[ ${defaultGitGUI} != 'none' ]] && [[ -d ${fullPath}/.git/ ]]; then
         open -a "${defaultGitGUI}" ${fullPath}
     fi
 }
