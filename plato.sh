@@ -43,8 +43,13 @@ site(){
       server=${sitesDirectory}
     fi
   else
-    project=$1
-    server=${sitesDirectory}
+    if [ -n "$2" ]; then
+      project=$2
+      server=${sitesDirectory}${1}/
+    else
+      project=$1
+      server=${sitesDirectory}
+    fi
   fi
   fullPath=${server}${project}
   resourcesPath=${resourcesDirectory}${project}
@@ -128,18 +133,18 @@ _vagrantup(){
   fi
 }
 
-question(){
+yn(){
   while true; do
-    read -p "${1} [Y/n]:" yn
-    case $yn in
-      [Y]* )
+    read -p "${1} [Y/n]:" answer
+    case $answer in
+      [Yy]* )
       return 0
       break;;
       [Nn]* )
       return 1
       break;;
       * )
-      echo "Please answer Yes or no.";;
+      echo "Please answer Yes or No.";;
     esac
   done
 }
@@ -234,7 +239,7 @@ clonesite(){
 }
 
 removesite(){
-  if question "Are you sure you want to delete ${fullPath}?"; then
+  if yn "Are you sure you want to delete ${fullPath}?"; then
     if [ -d ${fullPath}/ ]; then
       if [ -d ${fullPath}/.vagrant ]; then
         vagrant destroy
@@ -256,7 +261,7 @@ copylocalfiles(){
 resourcefolder(){
   if [[ ${resourcesDirectory} != 'none' ]]; then
     if [[ ! -d ${resourcesPath}/ ]]; then
-      if question "Would like to resource directory for ${project}?"; then
+      if yn "Would like to resource directory for ${project}?"; then
         mkdir ${resourcesPath}
         open ${resourcesPath}
       fi
