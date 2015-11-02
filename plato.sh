@@ -13,6 +13,7 @@ version=2.3
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
+echo 'For more information go to: https://github.com/PlatoCreative/plato.sh'
 
 ## Aliases ##
 alias wget="curl -O"
