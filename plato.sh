@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.0
+version=2.1
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -347,24 +347,31 @@ movetobitbucket(){
   #Prep local temp folder
   mkdir ${sitesDirectory}${new_repo}temp
   cd ${sitesDirectory}${new_repo}temp/
-
-  git clone ssh://${ssh_user}@${server_ip}/${old_repo} .
-  git fetch origin
-  # create new origin
-  git remote add new-origin https://${bitBucketName}@bitbucket.org/platocreative/${new_repo}.git
-  # copy everything to the new origin
-  git push --all new-origin
-  git push --tags new-origin
-  git remote rm origin
-  git remote rename new-origin origin
-
-  # Add generic login module
-  addloginmodule
+  if [ -z "$old_repo"]; then
+    scp -r ${ssh_user}@${server_ip}:${public_path}* .
+    git init
+    git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${project}.git
+    git branch --set-upstream-to=origin/master master
+    #Pushes commits to new repo
+    git push -u origin
+    # commit everything back to bitbucket
+    git add --all && git commit -m "Initial commit" && git push
+  else
+    git clone ssh://${ssh_user}@${server_ip}/${old_repo} .
+    git fetch origin
+    # create new origin
+    git remote add new-origin https://${bitBucketName}@bitbucket.org/platocreative/${new_repo}.git
+    # copy everything to the new origin
+    git push --all new-origin
+    git push --tags new-origin
+    git remote rm origin
+    git remote rename new-origin origin
+  fi
   # Remove local temp folder
   rm -rf ${sitesDirectory}${new_repo}temp
 
   # set new origin on live site
-  ssh ${ssh_user}@${server_ip} "cd ${public_path}; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull; composer install"
+  ssh ${ssh_user}@${server_ip} "cd ${public_path}; git init; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull"
 }
 
 export PATH="~/.composer/vendor/bin:/Applications/MAMP/bin/php/php5.6.2/bin:$PATH"
