@@ -68,8 +68,12 @@ site theme {nameOfSiteDirectory}
 
 
 ## For Vagrant users ##
-To run the server.  This will check the specified directory for a vagrant server and run it if available.  If its not then it will move up a directory to run that server if available. 
+
+## Server up ##
+This will check the specified directory for a vagrant server and run it if available.  If its not then it will move up a directory to run that server if available.
+```
 site up {nameOfSiteDirectory}
+```
 
 ## Share your site ##
 
