@@ -352,7 +352,8 @@ movetobitbucket(){
     echo "/assets
 /cms
 /sapphire
-.zip" >> .gitignore
+.zip
+.htaccess" >> .gitignore
 
     git init .
     git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${new_repo}.git
