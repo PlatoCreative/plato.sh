@@ -40,7 +40,7 @@ site cd {nameOfSiteDirectory}
 eg site cd platocreative.co.nz
 
 ## clone site from bitbucket ##
-
+Make sure the repo exist in your team account.
 ```
 site clone {nameOfBitBucketRepo}
 ```
@@ -53,7 +53,7 @@ site new {nameOfBitBucketRepo}
 ```
 eg site new platocreative.co.nz
 
-## open the site your default editor ##
+## open the site in your default editor ##
 
 ```
 site open {nameOfSiteDirectory}
