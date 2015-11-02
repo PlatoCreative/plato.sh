@@ -345,17 +345,24 @@ movetobitbucket(){
     server_ip=112.109.69.25
   fi
   #Prep local temp folder
-  mkdir ${sitesDirectory}${new_repo}temp
-  cd ${sitesDirectory}${new_repo}temp/
+  mkdir ${sitesDirectory}${new_repo}.temp
+  cd ${sitesDirectory}${new_repo}.temp/
   if [ -z "$old_repo"]; then
     scp -r ${ssh_user}@${server_ip}:${public_path}* .
-    git init
-    git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${project}.git
+    echo "/assets
+/cms
+/sapphire
+.zip" >> .gitignore
+
+    git init .
+    git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${new_repo}.git
     git branch --set-upstream-to=origin/master master
     #Pushes commits to new repo
     git push -u origin
     # commit everything back to bitbucket
     git add --all && git commit -m "Initial commit" && git push
+    # set new origin on live site
+    ssh ${ssh_user}@${server_ip} "cd ${public_path}; git init .; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull"
   else
     git clone ssh://${ssh_user}@${server_ip}/${old_repo} .
     git fetch origin
@@ -366,12 +373,11 @@ movetobitbucket(){
     git push --tags new-origin
     git remote rm origin
     git remote rename new-origin origin
+    # set new origin on live site
+    ssh ${ssh_user}@${server_ip} "cd ${public_path}; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull"
   fi
   # Remove local temp folder
-  rm -rf ${sitesDirectory}${new_repo}temp
-
-  # set new origin on live site
-  ssh ${ssh_user}@${server_ip} "cd ${public_path}; git init; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull"
+  rm -rf ${sitesDirectory}${new_repo}.temp
 }
 
 export PATH="~/.composer/vendor/bin:/Applications/MAMP/bin/php/php5.6.2/bin:$PATH"
