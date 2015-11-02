@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.2
+version=2.3
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -362,7 +362,7 @@ movetobitbucket(){
     # commit everything back to bitbucket
     git add --all && git commit -m "Initial commit" && git push
     # set new origin on live site
-    ssh ${ssh_user}@${server_ip} "cd ${public_path}; git init .; git remote set-url origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v; git pull"
+    ssh ${ssh_user}@${server_ip} "cd ${public_path}; git init .; git add origin git@bitbucket.org:platocreative/${new_repo}.git; git remote -v"
   else
     git clone ssh://${ssh_user}@${server_ip}/${old_repo} .
     git fetch origin
