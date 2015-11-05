@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.3
+version=2.4
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -29,7 +29,7 @@ alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %
 alias watch='bundle exec compass watch'
 
 ## Autocomplete options ##
-actions="cd open clone new remove theme up share halt prep resource copylocalfiles"
+actions="cd open clone new pull remove theme up share halt prep resource copylocalfiles"
 
 ## Functions ##
 
@@ -69,6 +69,9 @@ site(){
       ;;
       'new' )
       newsite; opensite; resourcefolder; copylocalfiles; themesite;
+      ;;
+      'pull' )
+      pullsite
       ;;
       'up' )
       configServer 'up'; cdsite
@@ -227,7 +230,9 @@ clonesite(){
   _vagrantup
 
   if [ -d ${fullPath}/ ]; then
-    echo "Project already exists.";
+    if yn "Project already exists.  Do you want to pull the latest?"; then
+      pullsite
+    fi
   else
     mkdir ${project}
     git clone https://${bitBucketName}@bitbucket.org/platocreative/${project}.git ${fullPath}
@@ -250,6 +255,13 @@ removesite(){
       echo "Removed ${fullPath}"
     fi
   fi
+}
+
+pullsite(){
+  cd ${fullPath}/
+  git pull
+  composer install
+  php framework/cli-script.php dev/build
 }
 
 copylocalfiles(){
