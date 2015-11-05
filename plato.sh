@@ -395,3 +395,10 @@ movetobitbucket(){
 }
 
 export PATH="~/.composer/vendor/bin:/Applications/MAMP/bin/php/php5.6.2/bin:$PATH"
+
+
+installtools(){
+  sudo gem install -n /usr/local/bin bundler
+  sudo gem install -n /usr/local/bin compass
+  sudo gem install -n /usr/local/bin sass 3.4.0
+}
