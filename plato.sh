@@ -6,7 +6,7 @@ defaultEditor=${defaultEditor:-'atom'}
 defaultProcessor=${defaultProcessor:-'compass'} # 'koala' 'compass' 'prepros'
 defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 # this directory will have its contents copied to a site during install
-localSetupDirectory=${localSetupDirectory:-~/Sites/Setup} # 'none'
+localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
 version=2.4
@@ -266,7 +266,7 @@ pullsite(){
 
 copylocalfiles(){
   if [[ ${localSetupDirectory} != 'none' ]] && [[ -d ${localSetupDirectory}/ ]]; then
-    cp -Ri ${localSetupDirectory}/* ${fullPath}/
+    cp -Ri ${localSetupDirectory}* ${fullPath}/
     echo 'copied' ${localSetupDirectory} 'to' ${fullPath}
   fi
 }
