@@ -213,6 +213,7 @@ newsite(){
     curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
     composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
     cd ${fullPath}/
+    php framework/cli-script.php dev/build
     #Removes installer origin
     git remote rm origin
     git remote rm composer
