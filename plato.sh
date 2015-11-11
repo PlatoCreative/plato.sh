@@ -208,7 +208,7 @@ newsite(){
   if [ -d ${fullPath}/ ]; then
     echo "Project already exists.";
   else
-    echo 'Password?'
+    echo 'Bitbucket password:'
     read -s password  # -s flag hides password text
     curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
     composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
@@ -351,6 +351,8 @@ movetobitbucket(){
   read old_repo
   echo "Bitbucket repo name(e.g. repo.co.nz): "
   read new_repo
+  echo 'Bitbucket password:'
+  read -s password  # -s flag hides password text
   if [ $server_ip == 'sonnen' ]; then
     server_ip=112.109.69.27
   fi
@@ -360,6 +362,7 @@ movetobitbucket(){
   if [ $server_ip == 'vs2' ]; then
     server_ip=112.109.69.25
   fi
+  curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${new_repo} --data is_private='true' --data owner='platocreative'
   #Prep local temp folder
   mkdir ${sitesDirectory}${new_repo}.temp
   cd ${sitesDirectory}${new_repo}.temp/
