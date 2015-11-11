@@ -208,6 +208,9 @@ newsite(){
   if [ -d ${fullPath}/ ]; then
     echo "Project already exists.";
   else
+    echo 'Password?'
+    read -s password  # -s flag hides password text
+    curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
     composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
     cd ${fullPath}/
     #Removes installer origin
