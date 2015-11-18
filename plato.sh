@@ -408,4 +408,6 @@ installtools(){
   sudo gem install -n /usr/local/bin bundler
   sudo gem install -n /usr/local/bin compass
   sudo gem install -n /usr/local/bin sass 3.4.0
+  
+  npm install bless -g
 }
