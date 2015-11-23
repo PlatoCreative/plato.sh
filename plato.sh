@@ -217,6 +217,8 @@ newsite(){
     #Removes installer origin
     git remote rm origin
     git remote rm composer
+    #Remove install folder before it gets committed
+    git rm -rf --cached install/
     #Adds new origin pointing to BitBucket
     git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${project}.git
     git branch --set-upstream-to=origin/master master
