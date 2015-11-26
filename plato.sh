@@ -412,4 +412,5 @@ installtools(){
   sudo gem install -n /usr/local/bin sass 3.4.0
   sudo brew install node
   sudo npm install bless -g
+  sudo npm install -g bower
 }
