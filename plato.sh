@@ -222,10 +222,8 @@ newsite(){
     #Adds new origin pointing to BitBucket
     git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${project}.git
     git branch --set-upstream-to=origin/master master
-    #Pushes commits to new repo
-    git push -u origin
     # commit everything back to bitbucket
-    git add --all && git commit -m "Initial commit" && git push
+    git add --all && git commit -m "Initial commit" && git push -u origin --all
   fi
 }
 
