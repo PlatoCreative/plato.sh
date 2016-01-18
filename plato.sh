@@ -26,12 +26,19 @@ alias gpp='git pull && git push'
 alias gc='git commit -m'
 alias gs='git status'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-alias watch='bundle exec compass watch'
 
 ## Autocomplete options ##
 actions="cd open clone new pull remove theme up share halt prep resource copylocalfiles"
 
 ## Functions ##
+
+watch(){
+    if [ -e 'gulpfile.js' ]; then
+        gulp
+    else
+        bundle exec compass watch
+    fi
+}
 
 site(){
   # assign variables
