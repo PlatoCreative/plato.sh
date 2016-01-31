@@ -41,6 +41,7 @@ watch(){
 }
 
 site(){
+  clear
   # assign variables
   if [ $(compgen -W "${actions}" -- ${1}) ]; then
     if [ -n "$3" ]; then
