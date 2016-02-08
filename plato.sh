@@ -34,8 +34,14 @@ actions="cd open clone new pull remove theme up share halt prep resource copyloc
 
 watch(){
     if [ -e 'gulpfile.js' ]; then
+        if [ ! -d "node_modules" ]; then
+            npm install --save-dev
+        fi
         gulp
     else
+        if [ ! -e 'gemfile.lock' ]; then
+            bundle install
+        fi
         bundle exec compass watch
     fi
 }
