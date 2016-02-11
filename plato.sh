@@ -429,5 +429,5 @@ installtools(){
   sudo brew install node
   sudo npm install bless -g
   sudo npm install -g bower
-  reset
+  echo "Restart terminal"
 }
