@@ -422,11 +422,12 @@ installtools(){
   # Install brew
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   # Install Composer
-  # curl -sS https://getcomposer.org/installer | php
+  sudo curl -sS https://getcomposer.org/installer | sudo -H php -- --install-dir=/usr/local/bin --filename=composer
   sudo gem install -n /usr/local/bin bundler
   sudo gem install -n /usr/local/bin compass
   sudo gem install -n /usr/local/bin sass 3.4.0
   sudo brew install node
   sudo npm install bless -g
   sudo npm install -g bower
+  reset
 }
