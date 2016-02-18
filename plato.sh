@@ -35,7 +35,7 @@ actions="cd open clone new pull remove theme up share halt prep resource copyloc
 watch(){
     if [ -e 'gulpfile.js' ]; then
         if [ ! -d "node_modules" ]; then
-            npm install --save-dev
+            sudo npm install --save-dev
         fi
         gulp
     else
@@ -224,7 +224,10 @@ newsite(){
   else
     echo 'Bitbucket password:'
     read -s password  # -s flag hides password text
-    curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
+    curl -X POST -v -u ${bitBucketName}:${password} -H "Content-Type: application/json" \
+    https://api.bitbucket.org/2.0/repositories/platocreative/${project} \
+    -d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
+    # curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
     composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
     cd ${fullPath}/
     php framework/cli-script.php dev/build
