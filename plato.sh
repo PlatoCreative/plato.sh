@@ -435,8 +435,13 @@ installtools(){
   echo "Restart terminal"
 }
 
-brucemigrategithub(){
+update_remote_bruce(){
   ssh_user=$1
   repo_name=$2
   ssh ${ssh_user}@223.165.64.88 "cd ${repo_name}/public/; git remote rm origin; git remote add origin git@github.com:PlatoCreative/${repo_name}.git; git push -u origin master; git remote -v"
+}
+
+update_remote_local(){
+  repo_name=$1
+  git remote rm origin; git remote add origin https://github.com/PlatoCreative/${repo_name}.git; git push -u origin master
 }
