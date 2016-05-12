@@ -434,3 +434,9 @@ installtools(){
   sudo npm install -g bower
   echo "Restart terminal"
 }
+
+brucemigrategithub(){
+  ssh_user=$1
+  repo_name=$2
+  ssh ${ssh_user}@223.165.64.88 "cd ${repo_name}/public/; git remote rm origin; git remote add origin git@github.com:PlatoCreative/${repo_name}.git; git push -u origin master; git remote -v"
+}
