@@ -443,5 +443,5 @@ update_remote_bruce(){
 
 update_remote_local(){
   repo_name=$1
-  git remote rm origin; git remote add origin https://github.com/PlatoCreative/${repo_name}.git; git push -u origin master
+  git remote rm origin; git remote add origin https://github.com/PlatoCreative/${repo_name}.git; git push -u origin master; git remote -v
 }
