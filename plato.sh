@@ -334,6 +334,16 @@ bruce(){
   fi
 }
 
+## run basil username 'password' ##
+basil(){
+  echo ssh ${1}@223.165.64.45
+  if [ -n "$2" ]; then
+    sshpass -p ${2} ssh ${1}@223.165.64.45 # Only works when you install sshpass
+  else
+    ssh ${1}@223.165.64.45
+  fi
+}
+
 ## run vs2 username 'password' ##
 vs2(){
   echo ssh ${1}@112.109.69.25
@@ -343,6 +353,8 @@ vs2(){
     ssh ${1}@112.109.69.25
   fi
 }
+
+
 
 addloginmodule(){
   if [ -f "composer.json" ]; then
