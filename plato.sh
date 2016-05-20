@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.6
+version=2.7
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -220,26 +220,24 @@ newsite(){
   _vagrantup
 
   if [ -d ${fullPath}/ ]; then
-    echo "Project already exists.";
+    if yn "Project already exists locally.  Do you want to pull the latest from github?"; then
+        pullsite
+    fi
   else
-    echo 'Bitbucket password:'
+    echo 'Github password:'
     read -s password  # -s flag hides password text
-    curl -X POST -v -u ${bitBucketName}:${password} -H "Content-Type: application/json" \
-    https://api.bitbucket.org/2.0/repositories/platocreative/${project} \
-    -d '{"scm": "git", "is_private": "true", "fork_policy": "no_public_forks" }'
-    # curl --user ${bitBucketName}:${password} https://api.bitbucket.org/1.0/repositories/ --data name=${project} --data is_private='true' --data owner='platocreative'
+    curl -u "${githubName}:${password}" https://api.github.com/orgs/PlatoCreative/repos -d '{"name":"'$project'","private": "true"}';
     composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
     cd ${fullPath}/
-    php framework/cli-script.php dev/build
     #Removes installer origin
     git remote rm origin
     git remote rm composer
     #Remove install folder before it gets committed
     git rm -rf --cached install/
-    #Adds new origin pointing to BitBucket
-    git remote add origin https://${bitBucketName}@bitbucket.org/platocreative/${project}.git
+    #Adds new origin pointing to github
+    git remote add origin https://github.com/PlatoCreative/${project}.git
     git branch --set-upstream-to=origin/master master
-    # commit everything back to bitbucket
+    # commit everything back to github
     git add --all && git commit -m "Initial commit" && git push -u origin --all
   fi
 }
@@ -256,7 +254,7 @@ clonesite(){
     fi
   else
     mkdir ${project}
-    git clone https://${bitBucketName}@bitbucket.org/platocreative/${project}.git ${fullPath}
+    git clone https://github.com/PlatoCreative/${project}.git ${fullPath}
 
     # change directory
     cd ${fullPath}/
