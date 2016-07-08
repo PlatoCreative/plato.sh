@@ -9,7 +9,13 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.7
+server_list=(
+  'vs2::112.109.69.25'
+  'sonnen::112.109.69.27'
+  'bruce::223.165.64.88'
+  'basil::223.165.64.45'
+)
+version=2.8
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -312,44 +318,46 @@ gacp(){
   fi
 }
 
-## run sonnen username 'password' ##
-sonnen(){
-  echo ssh ${1}@112.109.69.27
-  if [ -n "$2" ]; then
-    sshpass -p ${2} ssh ${1}@112.109.69.27 # Only works when you install sshpass
-  else
-    ssh ${1}@112.109.69.27
-  fi
+getServerIP(){
+    for index in "${server_list[@]}" ; do
+        server_name="${index%%::*}"
+        server_ip="${index##*::}"
+        if [ "${server_name}" = "${1}" ] ; then
+            echo ${server_ip}
+        fi
+    done
 }
 
-## run bruce username 'password' ##
-bruce(){
-  echo ssh ${1}@223.165.64.88
-  if [ -n "$2" ]; then
-    sshpass -p ${2} ssh ${1}@223.165.64.88 # Only works when you install sshpass
-  else
-    ssh ${1}@223.165.64.88
-  fi
+serverConnect(){
+    if [ -z "${server_list}" ]; then
+        echo "No servers declared."
+        return
+    fi
+
+    if [ -z "${3}" ]; then
+        echo "Missing ssh user."
+        return
+    fi
+    ssh_user=${3}
+    server_ip=$( getServerIP ${2} )
+    if [ -z ${server_ip} ]; then
+        echo "Server not found."
+        return
+    fi
+    case ${1} in
+        'ssh') ssh ${ssh_user}@${server} ;;
+        'sshpass') sshpass -p ${4} ssh ${ssh_user}@${server_ip} ;;
+        'clone') clone ssh://${ssh_user}@${server_ip}/${4} . ;;
+    esac
 }
 
-## run basil username 'password' ##
-basil(){
-  echo ssh ${1}@223.165.64.45
-  if [ -n "$2" ]; then
-    sshpass -p ${2} ssh ${1}@223.165.64.45 # Only works when you install sshpass
-  else
-    ssh ${1}@223.165.64.45
-  fi
-}
-
-## run vs2 username 'password' ##
-vs2(){
-  echo ssh ${1}@112.109.69.25
-  if [ -n "$2" ]; then
-    sshpass -p ${2} ssh ${1}@112.109.69.25 # Only works when you install sshpass
-  else
-    ssh ${1}@112.109.69.25
-  fi
-}
+# create aliases for serverConnect
+for index in "${server_list[@]}" ; do
+    server_name="${index%%::*}"
+    server_ip="${index##*::}"
+    alias ${server_name}="serverConnect ssh ${server_name}"
+    alias pass_${server_name}="serverConnect sshpass ${server_name}"
+    alias clone_${server_name}="serverConnect clone ${server_name}"
+done
 
 export PATH="~/.composer/vendor/bin:/Applications/MAMP/bin/php/php5.6.2/bin:$PATH"
