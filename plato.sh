@@ -341,7 +341,7 @@ serverConnect(){
     case ${1} in
         'ssh') ssh ${ssh_user}@${server_ip} ;;
         'sshpass') sshpass -p ${4} ssh ${ssh_user}@${server_ip} ;;
-        'clone') clone ssh://${ssh_user}@${server_ip}/${4} . ;;
+        'clone') git clone ssh://${ssh_user}@${server_ip}/${4} . ;;
     esac
 }
 
