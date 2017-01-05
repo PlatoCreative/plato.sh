@@ -37,7 +37,7 @@ watch(){
         if [ ! -d "node_modules" ]; then
             npm install
         fi
-        gulp watch {$1} {$2} {$3} {$4} {$5}
+        gulp watch ${1} ${2} ${3} ${4} ${5}
     else
         if [ ! -e 'gemfile.lock' ]; then
             bundle install
