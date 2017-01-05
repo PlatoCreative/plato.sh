@@ -35,9 +35,9 @@ actions="cd open clone new pull remove theme up share halt prep resource copyloc
 watch(){
     if [ -e 'gulpfile.js' ]; then
         if [ ! -d "node_modules" ]; then
-            sudo npm install --save-dev
+            npm install
         fi
-        gulp
+        gulp watch {$1} {$2} {$3} {$4} {$5}
     else
         if [ ! -e 'gemfile.lock' ]; then
             bundle install
