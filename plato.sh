@@ -200,17 +200,22 @@ opensite(){
 }
 
 themesite(){
-  themepath=${fullPath}/themes/*/
-  # if [ ! -d ${themepath} ]; then
-  #   themepath=${fullPath}/mysite/
-  # fi
-  if [[ ${defaultProcessor} == 'compass' ]]; then
-    # change directory
-    cd ${themepath}; ls; watch
-  else
-    open -a "${defaultProcessor}" ${themepath}
-    cd ${fullPath}
-  fi
+    cd ${fullPath}/
+    if [ -e 'gulpfile.js' ]; then
+        if [ ! -d "node_modules" ]; then
+            npm install
+        fi
+        gulp watch
+    else
+        themepath=${fullPath}/themes/*/
+        if [[ ${defaultProcessor} == 'compass' ]]; then
+            # change directory
+            cd ${themepath}; ls; watch
+        else
+            open -a "${defaultProcessor}" ${themepath}
+            cd ${fullPath}
+        fi
+    fi
 }
 
 newsite(){
