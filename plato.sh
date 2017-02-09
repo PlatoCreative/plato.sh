@@ -232,16 +232,12 @@ newsite(){
     echo 'Github password:'
     read -s password  # -s flag hides password text
     curl -u "${githubName}:${password}" https://api.github.com/orgs/PlatoCreative/repos -d '{"name":"'$project'","private": "true"}';
-    composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --keep-vcs
+    composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion}
     cd ${fullPath}/
-    #Removes installer origin
-    git remote rm origin
-    git remote rm composer
-    #Remove install folder before it gets committed
-    git rm -rf --cached install/
+    #create empty repo
+    git init
     #Adds new origin pointing to github
     git remote add origin https://github.com/PlatoCreative/${project}.git
-    git branch --set-upstream-to=origin/master master
     # commit everything back to github
     git add --all && git commit -m "Initial commit" && git push -u origin --all
   fi
