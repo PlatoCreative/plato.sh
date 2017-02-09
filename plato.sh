@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.11
+version=2.12
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
@@ -232,7 +232,7 @@ newsite(){
     echo 'Github password:'
     read -s password  # -s flag hides password text
     curl -u "${githubName}:${password}" https://api.github.com/orgs/PlatoCreative/repos -d '{"name":"'$project'","private": "true"}';
-    composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion}
+    composer create-project plato-creative/plato-silverstripe-installer ${fullPath} ${platoSilverstripeInstallerVersion} --no-interaction
     cd ${fullPath}/
     #create empty repo
     git init
