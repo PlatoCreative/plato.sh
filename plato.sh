@@ -9,7 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.10
+version=2.11
 ## settings end ##
 
 echo 'Successfully connected to plato bash v'${version}
