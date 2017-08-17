@@ -9,11 +9,7 @@ defaultGitGUI=${defaultGitGUI:-'none'} # 'none'
 localSetupDirectory=${localSetupDirectory:-~/Sites/Setup/} # 'none'
 #  this directory will store your resources for projects and will ready the directory for you
 resourcesDirectory=${resourcesDirectory:-'none'}
-version=2.12
 ## settings end ##
-
-echo 'Successfully connected to plato bash v'${version}
-echo 'For more information go to: https://github.com/PlatoCreative/plato.sh'
 
 ## Aliases ##
 alias wget="curl -O"
@@ -206,6 +202,11 @@ themesite(){
             npm install
         fi
         gulp watch
+    elif [ -e 'webpack.mix.js' ]; then
+        if [ ! -d "node_modules" ]; then
+            npm install
+        fi
+        npm run watch
     else
         themepath=${fullPath}/themes/*/
         if [[ ${defaultProcessor} == 'compass' ]]; then
