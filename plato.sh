@@ -241,7 +241,7 @@ newsite(){
     #create empty repo
     git init
     #Adds new origin pointing to github
-    git remote add origin git@github.com:PlatoCreative/${project}.git
+    git remote add origin https://github.com/PlatoCreative/${project}.git
     # commit everything back to github
     git add --all && git commit -m "Initial commit" && git push -u origin --all
   fi
@@ -259,7 +259,7 @@ clonesite(){
     fi
   else
     mkdir ${project}
-    git clone git@github.com:PlatoCreative/${project}.git ${fullPath}
+    git clone https://github.com/PlatoCreative/${project}.git ${fullPath}
 
     # change directory
     cd ${fullPath}/
@@ -285,7 +285,7 @@ gitremotesite(){
   cd ${fullPath}
   echo "Previous"
   git remote -v
-  git remote set-url origin git@github.com:PlatoCreative/${project}.git
+  git remote set-url origin https://github.com/PlatoCreative/${project}.git
   echo "New"
   git remote -v
 }
