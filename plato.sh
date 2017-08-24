@@ -24,7 +24,7 @@ alias gs='git status'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 
 ## Autocomplete options ##
-actions="cd open clone new pull remove theme up share halt prep resource copylocalfiles"
+actions="cd open clone new pull remove remote theme up share halt prep resource copylocalfiles"
 
 ## Functions ##
 
@@ -97,6 +97,9 @@ site(){
       ;;
       'remove' )
       removesite
+      ;;
+      'remote' )
+      gitremotesite
       ;;
       'theme' )
       themesite
@@ -276,6 +279,15 @@ removesite(){
       echo "Removed ${fullPath}"
     fi
   fi
+}
+
+gitremotesite(){
+  cd ${fullPath}
+  echo "Previous"
+  git remote -v
+  git remote set-url origin git@github.com:PlatoCreative/${project}.git
+  echo "New"
+  git remote -v
 }
 
 pullsite(){
